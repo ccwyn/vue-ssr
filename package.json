@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chokidar": "^3.4.2",
     "cross-env": "^7.0.2",
     "express": "^4.17.1"
   },

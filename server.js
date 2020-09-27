@@ -1,7 +1,7 @@
 const express = require('express')
 const fs = require('fs')
 const { createBundleRenderer } = require('vue-server-renderer')
-// const setupDevServer = require('./build/setup-dev-server')
+const setupDevServer = require('./build/setup-dev-server')
 
 const server = express()
 
@@ -11,7 +11,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 let renderer
 let onReady
-// if (isProd) {
+if (isProd) {
   const serverBundle = require('./dist/vue-ssr-server-bundle.json')
   const template = fs.readFileSync('./index.template.html', 'utf-8')
   const clientManifest = require('./dist/vue-ssr-client-manifest.json')
@@ -31,15 +31,15 @@ let onReady
     template,
     clientManifest
   })
-// } else {
-//   // 开发模式 -> 监视打包构建 -> 重新生成 Renderer 渲染器
-//   onReady = setupDevServer(server, (serverBundle, template, clientManifest) => {
-//     renderer = createBundleRenderer(serverBundle, {
-//       template,
-//       clientManifest
-//     })
-//   })
-// }
+} else {
+  // 开发模式 -> 监视打包构建 -> 重新生成 Renderer 渲染器
+  onReady = setupDevServer(server, (serverBundle, template, clientManifest) => {
+    renderer = createBundleRenderer(serverBundle, {
+      template,
+      clientManifest
+    })
+  })
+}
 
 const render = async (req, res) => {
   try {
