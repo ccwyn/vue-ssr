@@ -2,17 +2,15 @@ const Vue = require("vue");
 const express = require("express");
 const renderer = require("vue-server-renderer").createRenderer();
 const server = express();
+const fs = require('fs')
+
 
 server.get("/", (req, res) => {
   const app = new Vue({
-    template: `
-    <div id="app">
-      <h1>{{message}}</h1>
-    </div>
-    `,
-    data: {
-      message: "你好",
-    },
+    template:fs.readFileSync('./index.templates.html','utf-8'),
+    // data: {
+    //   message: "你好",
+    // },
   });
   renderer.renderToString(app, (err, html) => {
     if (err) {
